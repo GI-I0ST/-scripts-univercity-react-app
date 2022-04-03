@@ -41,6 +41,25 @@ class Api {
                 console.log('err', err);
             });
     }
+
+    getGroupAlbums(id) {
+        return axios.get(host + '/album?groupId=' + id)
+            .then((response) => {
+                console.log('album', response.data)
+                return response.data
+            })
+
+    }
+
+    editAlbum(album) {
+        return axios.put(host + '/album', album)
+            .then((response) => {
+                console.log('edited album', response.data);
+                return response.data
+            }).catch(err => {
+                console.log('err', err);
+            });
+    }
 }
 
 export default new Api();
