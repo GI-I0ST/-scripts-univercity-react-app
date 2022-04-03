@@ -1,7 +1,7 @@
 import * as React from "react";
 import Api from "../request/api"
 
-class GroupComponent extends React.Component {
+class GroupListComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {data: []};
@@ -15,9 +15,9 @@ class GroupComponent extends React.Component {
     }
 
     render() {
-        const list = this.state.data.map(v => <li key={v.id}>{v.name}</li>);
-        return (<ul>{list}</ul>);
+        const list = this.state.data.map(v => <a className="list-group-item list-group-item-actio" href={'/group/'+v.id} key={v.id}>{v.name}</a>);
+        return (<div className="list-group">{list}</div>);
     }
 }
 
-export default GroupComponent;
+export default GroupListComponent;
