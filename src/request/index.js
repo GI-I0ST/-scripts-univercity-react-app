@@ -1,8 +1,10 @@
 import React from "react";
 import groupStore from './groups';
+import albumsStore from "./albums";
 
 const rootStore = {
   groupStore,
+  albumsStore
 }
  const StoresContext = React.createContext(null);
 
