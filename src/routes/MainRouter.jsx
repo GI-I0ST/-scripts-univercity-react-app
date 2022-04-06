@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, Routes} from 'react-router-dom';
 import GroupListComponent from "../components/GroupList/GroupListComponent";
-import NewGroupComponent from "../components/NewGroupComponent";
+import NewGroupComponent from "../components/AddNewGroup";
 import GroupPageComponent from "../components/GroupPageComponent";
 
 const MainRouter = (

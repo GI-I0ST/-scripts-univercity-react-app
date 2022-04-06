@@ -30,11 +30,11 @@ class Group {
 
   setAllGroups = data => this.allGroups = data;
   clearAllGroups = _ => this.allGroups = [];
-  setGroupInfo = (id, data) => this.groupInfo = {id, data};
+  setGroupInfo = data => this.groupInfo = data;
   clearGroupInfo = _ => this.groupInfo = initialGroupInfo;
 
   // API
-  addGroup ({name}) {
+  addGroup ({name, onSuccess, onError}) {
     if (!name) {
       return console.error('name is required')
     }
@@ -48,16 +48,19 @@ class Group {
     req
         .then( (res) => {
           console.log(res)
+          onSuccess?.(res?.data)
         })
         .catch((err) => {
           console.log('err', err)
+          onError?.(err)
         })
   }
-  editGroup ({id, name}) {
+  editGroup ({id, name, onSuccess, onError}) {
     if (!name || !id) {
       return console.error('name and id is required')
     }
     const data  = {id, name};
+    const setGroupInfo = this.setGroupInfo;
 
     const [req] = api.put({
       url: `/group`,
@@ -66,24 +69,26 @@ class Group {
 
     req
         .then( (res) => {
-          console.log(res)
+          setGroupInfo(res.data)
+          onSuccess?.(res.data)
         })
-        .catch((err) => console.error('err', err))
+        .catch((err) => onError?.(err))
   }
   deleteGroup ({id}) {
     if (!id) {
       return console.error('id is required')
     }
     const data  = {id};
+    const getAllGroups = this.getAllGroups;
 
     const [req] = api.delete({
       url: `/group`,
-      data,
+      config: {data},
     });
 
     req
         .then( (res) => {
-          console.log(res)
+          getAllGroups()
         })
         .catch((err) => console.error('err', err))
   }
@@ -97,7 +102,6 @@ class Group {
 
     req
         .then( (res) => {
-          console.log(res)
           setAllGroups(res.data)
         })
         .catch((err) => {
@@ -105,27 +109,28 @@ class Group {
           clearAllGroups()
         })
   }
-  getGroupById ({id}) {
+  getGroupById ({id, onSuccess, onError}) {
     if (!id) {
       return console.error('id is required')
     }
-    const data = {id};
+    const params = {id};
     const setGroupInfo = this.setGroupInfo,
         clearGroupInfo = this.clearGroupInfo;
 
     const [req] = api.get({
       url: `/group`,
-      data,
+      config: {params},
     });
 
     req
         .then( (res) => {
-          console.log(res)
-          setGroupInfo(id, res.data)
+          setGroupInfo(res.data)
+          onSuccess?.(res.data)
         })
         .catch((err) => {
           console.error('err', err);
           clearGroupInfo()
+          onError?.(err)
         })
   }
 }

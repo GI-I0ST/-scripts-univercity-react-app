@@ -3,7 +3,7 @@ import {REQUEST_TIMEOUT, BASE_API} from '../const/settings';
 
 const instance = axios.create({
   baseURL: BASE_API,
-  timeout: REQUEST_TIMEOUT,
+  // timeout: REQUEST_TIMEOUT,
 });
 
 
