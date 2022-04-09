@@ -1,6 +1,14 @@
-.formWrapper{
+.wrapper{
   min-width: 60rem;
   max-width: 96vw;
+}
+
+.title{
+  text-align: center;
+  margin: 1rem auto;
+  font-size: 2rem;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .inputGroup{
@@ -15,10 +23,3 @@
   }
 }
 
-.formTitle{
-  text-align: center;
-  font-size: 2rem;
-  line-height: 3rem;
-  text-transform: uppercase;
-  margin: 1rem auto;
-}

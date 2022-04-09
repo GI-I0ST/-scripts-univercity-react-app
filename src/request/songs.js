@@ -36,7 +36,7 @@ class Songs {
       name,
       albumId
     }
-
+    const getSongsByAlbumId = this.getSongsByAlbumId;
     const [req] = api.post({
       url,
       data
@@ -45,6 +45,7 @@ class Songs {
     req
         .then((res) => {
           onSuccess?.(res.data)
+          getSongsByAlbumId({albumId})
         })
         .catch((err) => {
           onError?.(err)
@@ -81,7 +82,7 @@ class Songs {
 
     const [req] = api.get({
       url,
-      data
+      config: {params: data}
     })
     const setSongsByAlbumId = this.setSongsByAlbumId;
 
@@ -105,7 +106,9 @@ class Songs {
 
     const [req] = api.get({
       url,
-      data
+      config: {
+        params: data
+      }
     })
 
     req

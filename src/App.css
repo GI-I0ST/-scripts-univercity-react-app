@@ -55,3 +55,25 @@
   color: rgba(var(--main-color), 0);
 
 }
+.formSubmit {
+  display: block;
+  margin: 2rem auto;
+  outline: rgba(var(--main-color), .8);
+  border-bottom: 4px solid rgba(var(--link-color), .15);
+  border-right: 2px solid rgba(var(--link-color), .1);
+  border-left: 6px solid transparent;
+  border-top: 2px solid transparent;
+  box-shadow: 2px 4px 6px rgba(var(--link-color), .25),
+  inset 1px 1px 2px rgba(232, 230, 230, 0.6);
+  min-width: 10rem;
+  padding: .5rem 1rem;
+  transition: all .2s;
+}
+.formSubmit:hover{
+   box-shadow: 2px 4px 6px rgba(var(--link-color), .15),
+   inset 1px 1px 2px rgba(232, 230, 230, 0.6);
+ }
+.formSubmit:active{
+   box-shadow: 1px 2px 3px rgba(var(--link-color), .05),
+   inset 1px 1px 2px rgba(232, 230, 230, 0.6);
+}

@@ -111,7 +111,7 @@ const AlbumCreate = (props) => {
           </div>
           <button
               type={"submit"}
-              className={s.formSubmit}
+              className={"formSubmit"}
           >
             {
               album.id ?

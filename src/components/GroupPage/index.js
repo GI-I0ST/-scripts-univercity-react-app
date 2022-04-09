@@ -11,21 +11,26 @@ import Modal from "../Modal";
 import {useStore} from "../../request";
 import {observer} from "mobx-react";
 import {Link} from "react-router-dom";
+import AddNewSong from "../AddNewSong";
 
 function GroupPageComponent() {
-    const [modalIsOpened, setModalIsOpened] = useState(false);
-    const [editedAlbum, setEditedAlbum] = useState(undefined);
+    const [albumModalIsOpened, setAlbumModalIsOpened] = useState(false);
+    const [songModalOpened, setSongModalOpened] = useState(false);
+    const [albumInfo, setAlbumInfo] = useState(undefined);
     let params = useParams();
 
     const {
         albumsStore: {
             deleteAlbum,
             getAlbumsByGroupId,
-            albumsByGroupId
+            albumsByGroupId,
         },
         groupStore: {
             getGroupById,
             groupInfo
+        },
+        songsStore: {
+            addSong
         }
     } = useStore();
 
@@ -40,18 +45,20 @@ function GroupPageComponent() {
 
     function newAlbum(e) {
         e.stopPropagation();
-        setModalIsOpened(true);
+        setAlbumModalIsOpened(true);
     }
 
-    function addSong (e) {
+    function handleAddSong (e, album) {
         e.stopPropagation();
-        console.log('addSong');
+        setAlbumInfo(album)
+        setSongModalOpened(album)
     }
+
 
     function editAlbum(e, album) {
         e.stopPropagation();
-        setEditedAlbum(album)
-        setModalIsOpened(true);
+        setAlbumInfo(album)
+        setAlbumModalIsOpened(true);
     }
 
     function handleDelete(e, album) {
@@ -61,9 +68,14 @@ function GroupPageComponent() {
             groupId: params.groupId
         })
     }
-    function closeModal() {
-        setModalIsOpened(false)
-        setEditedAlbum(undefined)
+    function closeAlbumModal() {
+        setAlbumModalIsOpened(false)
+        setAlbumInfo(undefined)
+    }
+
+    function closeSongModal() {
+        setSongModalOpened(false)
+        setAlbumInfo(undefined)
     }
 
     return (<div className={s.groupWrapper}>
@@ -89,7 +101,7 @@ function GroupPageComponent() {
                     </div>
                     <div
                         className={s.addSong}
-                        onClick={addSong}
+                        onClick={(e) => handleAddSong(e, album)}
                     >
                         <AddIcon/>
                     </div>
@@ -109,9 +121,15 @@ function GroupPageComponent() {
             </div>
         </div>
         {
-            modalIsOpened && <Modal onClose={closeModal}>
-                <AlbumCreate album={editedAlbum} group={params.groupId} onClose={closeModal}/>
+            albumModalIsOpened && <Modal onClose={closeAlbumModal}>
+                <AlbumCreate album={albumInfo} group={params.groupId} onClose={closeAlbumModal}/>
             </Modal>
+        }
+        {
+            songModalOpened &&
+                <Modal onClose={closeSongModal}>
+                    <AddNewSong albumId={albumInfo.id} onClose={closeSongModal}/>
+                </Modal>
         }
     </div>);
 
