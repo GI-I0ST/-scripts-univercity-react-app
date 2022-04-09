@@ -53,12 +53,12 @@ export default (observer(({onClose, editedId}) => {
         <h1 className={s.newGroupTitle}>{
             editedId? "Edit group" : "Create new group"}</h1>
         <input
-            className={s.input}
+            className={"input"}
             type="text"
             value={inputValue}
             onInput={handleInputChange}
             placeholder={"Group name"}
         />
-        <button className="btn btn-success btn-lg float-end" onClick={save}>Save</button>
+        <button className="btn btn-success btn-lg float-end mt-5" onClick={save}>Save</button>
     </div>);
 }))

@@ -7,24 +7,3 @@
   margin-bottom: 2rem;
   text-align: center;
 }
-
-.input{
-  border: none;
-  border-bottom: 1px solid rgba(var(--main-color), .6);
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  font-weight: 400;
-  letter-spacing: .4px;
-  width: 100%;
-  margin: 2rem 0;
-
-  &::placeholder{
-    color: rgba(var(--main-color), .6);
-    transition: all .2s;
-  }
-  &:focus{
-    &::placeholder{
-      color: rgba(var(--main-color), 0);
-    }
-  }
-}

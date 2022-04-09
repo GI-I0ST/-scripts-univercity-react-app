@@ -3,10 +3,10 @@ import {withStore} from "../../request";
 import {observer} from "mobx-react";
 import {Link} from "react-router-dom";
 import s from './styles.module.scss';
-import CloseButton from "../Buttons/CloseButton";
 import EditIcon from "../../static/edit";
 import Modal from "../Modal";
 import NewGroupComponent from "../AddNewGroup";
+import TrashIcon from '../../static/trash';
 
 class GroupListComponent extends React.Component {
   constructor(props) {
@@ -47,7 +47,9 @@ class GroupListComponent extends React.Component {
             className={s.listItem}
             key={id}
         >
-          <CloseButton onClick={handleDelete} data-id={id} className={s.closeBtn}/>
+          <div onClick={handleDelete} data-id={id} className={s.closeBtn}>
+            <TrashIcon/>
+          </div>
           <div className={s.edit} onClick={this.handleModalOpen} data-id={id}>
             <EditIcon/>
           </div>

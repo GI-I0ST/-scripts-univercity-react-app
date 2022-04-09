@@ -1,12 +1,24 @@
-import {makeObservable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 import api from "./apiInstance";
-
+import groupStore from './groups';
 const URL = "/album"
 
 class Albums {
+  albumsByGroupId = [];
+  albumInfo = {};
+
   constructor() {
-    makeObservable(this, {})
+    makeObservable(this, {
+      albumsByGroupId: observable,
+      albumInfo: observable,
+      setAlbumsByGroupId: action,
+      setAlbumInfo: action,
+    })
   }
+
+
+  setAlbumsByGroupId = data => this.albumsByGroupId = data;
+  setAlbumInfo = data => this.albumInfo = data;
 
   //API
   addAlbum = ({
@@ -28,10 +40,12 @@ class Albums {
       url: URL,
       data
     })
+    const getAlbumsByGroupId = this.getAlbumsByGroupId;
 
     req
         .then((res) => {
           onSuccess?.(res.data)
+          getAlbumsByGroupId?.({groupId})
         })
         .catch((err) => onError?.(err))
   }
@@ -39,6 +53,7 @@ class Albums {
                  id,
                  name,
                  year,
+                 groupId,
                  onSuccess,
                  onError,
                }) => {
@@ -53,10 +68,12 @@ class Albums {
       data
     })
 
+    const getAlbumsByGroupId = this.getAlbumsByGroupId;
     req
         .then((res) => {
           onSuccess?.(res.data)
-        })
+          getAlbumsByGroupId?.({groupId})
+    })
         .catch((err) => onError?.(err))
 
   }
@@ -79,6 +96,7 @@ class Albums {
                     onError
                   }) => {
 
+    const setAlbumInfo = this.setAlbumInfo;
     const [req] = api.get({
       url: URL,
       config: {
@@ -87,7 +105,10 @@ class Albums {
     })
 
     req
-        .then((res) => onSuccess?.(res.data))
+        .then((res) => {
+          onSuccess?.(res.data);
+          setAlbumInfo(res.data)
+        })
         .catch((err) => onError?.(err))
   }
 
@@ -104,17 +125,23 @@ class Albums {
       }
     })
 
+    const setAlbumsByGroupId = this.setAlbumsByGroupId;
     req
-        .then((res) => onSuccess?.(res.data))
+        .then((res) => {
+          setAlbumsByGroupId(res.data);
+          onSuccess?.(res.data);
+        })
         .catch((err) => onError?.(err))
 
   }
   deleteAlbum = ({
                    id,
+                   groupId,
                    onSuccess,
                    onError
                  }) => {
     const data = {id}
+    const getAlbumsByGroupId = this.getAlbumsByGroupId;
 
     const [req] = api.delete({
       url: URL,
@@ -122,7 +149,11 @@ class Albums {
     })
 
     req
-        .then((res) => onSuccess?.(res.data))
+        .then((res) => {
+          onSuccess?.(res.data)
+          groupStore.getGroupById({id: groupId})
+          getAlbumsByGroupId({groupId})
+        })
         .catch((err) => onError?.(err))
   }
 
