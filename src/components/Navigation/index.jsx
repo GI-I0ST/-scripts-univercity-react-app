@@ -14,7 +14,6 @@ const Navigation = () => {
   return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">Groups</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                   data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                   aria-label="Toggle navigation">
@@ -23,7 +22,17 @@ const Navigation = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <div className="nav-link" onClick={handleModalOpen}>Add Group</div>
+                <Link className="nav-link" to={"/"}>Groups</Link>
+              </li>
+            </ul>
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link className="nav-link" to={"/albums"}>Albums</Link>
+              </li>
+            </ul>
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link className="nav-link" to={"/songs"}>Songs</Link>
               </li>
             </ul>
           </div>

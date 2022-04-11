@@ -4,14 +4,12 @@ import {useStore} from "../../request";
 import {observer} from "mobx-react";
 import VinylIcon from '../../static/vinyl'
 import HeartIcon from '../../static/heart'
-import MusicIcon from '../../static/music'
-import EditIcon from '../../static/edit'
 import AddIcon from '../../static/add'
-import TrashIcon from '../../static/trash'
 
 import s from './styles.module.scss';
 import Modal from "../Modal";
 import AddNewSong from "../AddNewSong";
+import Song from "../Song";
 
 const AlbumPage = () => {
   const {
@@ -27,7 +25,6 @@ const AlbumPage = () => {
     songsStore: {
       songsByAlbumId,
       getSongsByAlbumId,
-      deleteSong
     }
   } = useStore();
 
@@ -40,18 +37,6 @@ const AlbumPage = () => {
     })
   },[]);
 
-
-  const handleEditSong = (e, song) => {
-    e.stopPropagation();
-    setSongInfo(song)
-  }
-  const handleDeleteSong = (e, song) => {
-    e.stopPropagation();
-    deleteSong({
-      id: song.id,
-      albumId,
-    })
-  }
   const handleAddSong = (e) => {
     e.stopPropagation()
     setSongInfo({albumId})
@@ -69,7 +54,7 @@ const AlbumPage = () => {
           </div>
           <div className={s.info}>
             <span className={s.title}>{albumInfo.name}</span>
-            <span className={s.year}>{albumInfo.year} y.</span>
+            <span>{albumInfo.year} y.</span>
             <div className={s.rating}><HeartIcon/> <span>{albumInfo.mark}</span></div>
           </div>
         </div>
@@ -79,24 +64,7 @@ const AlbumPage = () => {
           <div>Songs</div><AddIcon onClick={handleAddSong}/>
         </div>
         {
-          songsByAlbumId?.map?.((song) => (
-              <div className={s.song}>
-                <div className={s.songIcon}><MusicIcon/></div>
-                <span>{song.name}</span>
-                <div
-                    className={s.songEdit}
-                    onClick={(e) => handleEditSong(e, song )}
-                >
-                  <EditIcon/>
-                </div>
-                <div
-                    className={s.songEdit}
-                    onClick={(e) => handleDeleteSong(e, song )}
-                >
-                  <TrashIcon/>
-                </div>
-              </div>
-          ))
+          songsByAlbumId?.map?.((song) => <Song song={song} key={song.id}/>)
         }
         {
           songInfo && <Modal onClose={handleCloseEditSong}>

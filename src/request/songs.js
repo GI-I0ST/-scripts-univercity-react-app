@@ -56,7 +56,7 @@ class Songs {
   getAllSongs = ({
                    onSuccess,
                    onError
-                 }) => {
+                 }={}) => {
     const [req] = api.get({
       url
     })
@@ -134,6 +134,7 @@ class Songs {
 
     const getSongById = this.getSongById;
     const getSongsByAlbumId = this.getSongsByAlbumId;
+    const getAllSongs = this.getAllSongs;
 
     const [req] = api.put({
       url,
@@ -145,6 +146,7 @@ class Songs {
           onSuccess?.(res.data)
           getSongById({id})
           getSongsByAlbumId({albumId})
+          getAllSongs()
         })
         .catch((err) => onError?.(err))
   }
@@ -158,7 +160,8 @@ class Songs {
     if (!id || !albumId) return console.error("Not valid data");
 
     const getSongsByAlbumId = this.getSongsByAlbumId;
-    const data = {id};
+    const getAllSongs = this.getAllSongs;
+    const data = {id : Number(id)};
 
     const [req] = api.delete({
       url,
@@ -168,6 +171,7 @@ class Songs {
     req
         .then((res) => {
           getSongsByAlbumId({albumId})
+          getAllSongs()
           onSuccess?.(res.data)
         })
         .catch((err) => onError?.(err))

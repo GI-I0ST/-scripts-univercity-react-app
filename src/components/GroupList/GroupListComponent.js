@@ -7,6 +7,7 @@ import EditIcon from "../../static/edit";
 import Modal from "../Modal";
 import NewGroupComponent from "../AddNewGroup";
 import TrashIcon from '../../static/trash';
+import AddIcon from '../../static/add';
 
 class GroupListComponent extends React.Component {
   constructor(props) {
@@ -14,9 +15,11 @@ class GroupListComponent extends React.Component {
     this.groupStore = props?.store?.groupStore;
     this.state = {
       groupModalOpened: false,
+      editedGroupId: null,
     }
 
     this.handleModalOpen = this.handleModalOpen.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
     this.getId = this.getId.bind(this);
   }
 
@@ -30,7 +33,18 @@ class GroupListComponent extends React.Component {
 
   handleModalOpen(e) {
     e.stopPropagation();
-    this.setState({groupModalOpened: this.getId(e)})
+    this.setState({
+      editedGroupId: this.getId(e),
+      groupModalOpened: true,
+    })
+  }
+
+  handleModalClose(e) {
+    e.stopPropagation();
+    this.setState({
+      editedGroupId: this.getId(e),
+      groupModalOpened: false,
+    })
   }
 
   render() {
@@ -60,9 +74,15 @@ class GroupListComponent extends React.Component {
           </Link>
         </div>)
       }
+      <div
+          className={s.addGroupItem}
+          onClick={this.handleModalOpen}
+      >
+       <AddIcon/>
+      </div>
       {
-        this.state?.groupModalOpened && <Modal onClose={this.handleModalOpen}>
-          <NewGroupComponent onClose={this.handleModalOpen} editedId={this.state.groupModalOpened}/>
+        this.state?.groupModalOpened && <Modal onClose={this.handleModalClose}>
+          <NewGroupComponent onClose={this.handleModalClose} editedId={this.state.editedGroupId}/>
         </Modal>
       }
     </div>);

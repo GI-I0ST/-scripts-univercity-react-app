@@ -5,20 +5,24 @@ const URL = "/album"
 
 class Albums {
   albumsByGroupId = [];
+  albumsList=[];
   albumInfo = {};
 
   constructor() {
     makeObservable(this, {
       albumsByGroupId: observable,
       albumInfo: observable,
+      albumsList: observable,
       setAlbumsByGroupId: action,
       setAlbumInfo: action,
+      setAlbumsList: action,
     })
   }
 
 
   setAlbumsByGroupId = data => this.albumsByGroupId = data;
   setAlbumInfo = data => this.albumInfo = data;
+  setAlbumsList = data => this.albumsList = data;
 
   //API
   addAlbum = ({
@@ -69,10 +73,12 @@ class Albums {
     })
 
     const getAlbumsByGroupId = this.getAlbumsByGroupId;
+    const getAllAlbums = this.getAllAlbums;
     req
         .then((res) => {
           onSuccess?.(res.data)
           getAlbumsByGroupId?.({groupId})
+          getAllAlbums()
     })
         .catch((err) => onError?.(err))
 
@@ -80,14 +86,19 @@ class Albums {
   getAllAlbums = ({
                     onSuccess,
                     onError,
-                  }) => {
+                  } = {}) => {
 
     const [req] = api.get({
       url: URL
     })
 
+    const setAlbumsList = this.setAlbumsList;
+
     req
-        .then((res) => onSuccess?.(res.data))
+        .then((res) => {
+          setAlbumsList(res.data)
+          onSuccess?.(res.data)
+        })
         .catch((err) => onError?.(err))
   }
   getAlbumById = ({
@@ -140,8 +151,10 @@ class Albums {
                    onSuccess,
                    onError
                  }) => {
-    const data = {id}
+
+    const data = {id : Number(id)}
     const getAlbumsByGroupId = this.getAlbumsByGroupId;
+    const getAllAlbums = this.getAllAlbums;
 
     const [req] = api.delete({
       url: URL,
@@ -153,6 +166,7 @@ class Albums {
           onSuccess?.(res.data)
           groupStore.getGroupById({id: groupId})
           getAlbumsByGroupId({groupId})
+          getAllAlbums()
         })
         .catch((err) => onError?.(err))
   }
